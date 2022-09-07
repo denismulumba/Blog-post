@@ -1,0 +1,939 @@
+\title{{\bf Dynamical Systems Modelling}
+
+}
+\author{ {Denis Mulumba and Yusuf Brima}  \\
+
+}
+
+\date{}
+
+
+\begin{document}
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+\end{titlepage}
+\clearpage
+\pagenumbering{roman}
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\pagenumbering{arabic}
+\section{Introduction to physical/dynamical process modelling}
+In our day to day lives, a lot of natural and artificial phenomena can be described and/ or explained using Mathematical tools. Many of these phenomena change with time, some in  a more sophisticated way compared to others. This inspires the modelling of such systems termed to as Dynamical Systems. Dynamical Systems can range from simple interaction of predators and preys in a habitat, for example the variation of the population of foxes and rabbits, to viral spread (such as COVID-19) in a population. The set of mathematical tools used to model such systems allow us, we mean, any one with a fair bit of motivation and access of a modern computer programming environment, to model and make meaningful predictions of the time-evolving properties if such systems. That's why, modelling techniques of dynamical systems are extensively used in engineering, economics, epidemiology, physics  and many more disciplines .\\ 
+% This is the command for new page
+% \newpage 
+However, the factors and variables determine the cumbersomeness of the dynamical system under consideration. These systems behavior can be interpreted to the re-known differential equations from which further examinations can be done to well explain how these systems behave.
+
+ \section{Differential Equations (Ordinary and Partial) }
+ If you are a numbers nerd or have an inclination to mathematics, odds are, you may have come across this linchpin of modern mathematics. If not, be rest assured, because you are about to learn something profound which will change your view of the world around you. If you are wondering, we are not exaggerating! Thus, in this blog, we want to journey with you into the amazing beauty and power of this approach to model time-varying systems. So, what is a differential equation? A differential equation (often abbreviated DE) can be defined as an equation that contains one or more functions of one independent variable and their corresponding derivatives. So, if you are acquainted with functions and and high school calculus (i.e., differential and integral), we are in a better footing if not, don't worry. Learn the basics of \href{https://www.mathsisfun.com/sets/function.html}{functions}  and \href{https://www.mathsisfun.com/calculus/derivatives-introduction.html}{derivatives} and come back and continue. Differential equations range from ordinary to partial. The generic form of a differential equation is thus:
+   \begin{equation}
+       \frac{d \mathbf{x}}{d t}=f(\mathbf{x}), \mathbf{x} \in \mathbb{R}^{d},
+       \label{eq:differential_equation}
+   \end{equation}
+  with initial value $\mathbf{x}\left(t_{0}\right)=\mathbf{x}_{0}$. As mentioned above, ordinary differential equation (ODE) is one of types of DEs. It is called ordinary because it entails a \textbf{single independent variable} like \textbf{x} in equation \ref{eq:ode_sample}.
+  \begin{equation}
+      \frac{dy}{dx}=f(x).
+      \label{eq:ode_sample}
+  \end{equation}
+  An ODE does not impose the relationship between partial derivatives of a multivariate function % what is a multivariate function?
+  as it is for a partial differential equation (PDE). One may wonder, what is a multivariate function anyway?! A multivariate (otherwise known as multi-variable) function is just a fancy name for a function that has multiple inputs: if you are a programmer, think of it a a function with multiple arguments/parameters and multiple return values (they could not necessarily be of the same type). That's it, you get the idea. A mathematical national representation is shown in equation \ref{multi}. In contrast, a function with single input  and a single output is called a single-variable function. Think of, for example a black-box, which you enter in and our height (in meters for example) comes out on the other side as shown in equation \ref{single}. 
+ \begin{equation}
+     f: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}.
+     \label{multi}
+ \end{equation}
+ As example of a multivariate function is shown as follows:
+ \[
+    f(x, y)=x^{3}-y^{3}+3 x y+7,
+ \]
+ which is a function of two independent variables $x$ and $y$.
+\begin{equation}
+     f: \mathbb{R} \rightarrow \mathbb{R}.
+     \label{single}
+ \end{equation}
+ An example of a single variable function can be as follows:
+  \[
+    f(x)=x^{2} + 2,
+ \]
+ where the function has $x$ only as the independent variable. The example of a single variable function above is a stated oversimplification, because in reality, it could be linear, non-linear, cubic, quadratic or polynomial in form. However, that is the basis of all ODE formulations. It has one independent variable and it's derivatives.
+ So you may be wondering, are there nuts and bolts about ODEs worth pointing out. You definitely guessed it! There are, in fact a slew of of technical details to which becomes are whole area of specialization in the study of differential equations. So, to be just to the field, we shall brush through the main (we mean what we deem to the bare essentials) ideas. To home these ideas, let's take a some example of an ODE:
+ \[ 
+ y+\frac{d y}{d x}=5 x,
+ \]
+the equation about is a function of $y$ with respect to (w.r.t for short in mathematical speak) the variable $x$ and it's derivative $\frac{d y}{d x}$. The derivative is the key to it been called a differential equation as shown above. So pay a closer attention to this piece of fact as we proceed and that's what make this mathematical form of abstraction very powerful. The $y$ is called a function, because in maths, a dependent variable is function of its input(s) plus any other constant(s). You may be wondering why on earth we are ranting about the power (and beauty) of these mathematical artifacts. The reason is simple! In our universe (and maybe others beyond our current scientific knowledge), things change, and to be able to describe this change is what led our 17\textsuperscript{th} Century ancestors: Leibniz, the Bernoulli brothers and others to conjure the ideas of differential equations. 
+
+To deeply appreciate the usefulness of DEs, let's talk about rabbits albeit in math terms. The intuition about the evolutionary behaviour of rabbit population in a suitable habitat is pretty straightforward -- at least if you have some environmental priors, which is not rocket science. Put bluntly, the more rabbits we have the baby rabbits then can be over time. There is an inherent feedback loop effect because those baby rabbits will grow and have more babies too. The cycle continues as the population grows faster and faster until some limit (physical as you would imagine) is reached. So to put this into a mathematical framework would be as follows:
+at any given time $t$, we will have $N$ rabbits with a growth rate $r$. Therefore, the population's rate of change is:
+\begin{equation}
+    \frac{dN}{dt}
+    \label{rabbits}
+\end{equation}
+ If you have some fair bit of calculus under your belt, then it will become apparent equation \ref{rabbits} is a derivative (or slope as some would call it). It means $\lim\limits_{t \to +\infty}$, we want to capture the extent to which the population has changed. If we unpack the heavy notation, we want to measure the minutest change in the population of rabbits. A time smaller than a zeptosecond  (i.e.,  one trillionth of a billionth of a second). If we suppose that the growth rate $r$ is 0.01 new rabbits per week for every current rabbit population $N$. This means when $N$ is 1000, the rate of change $\frac{dN}{dt}$ is then $1000 \times 0.01 = 10$ new rabbits per week. However, the drawback to our formulation is it is true for only that population instance and doesn't account for the change that is happening continuously. But one lesson we can learn is the bigger the population, the more new rabbits there can be! This implies if the population is 2000 we get $2000\times0.01 = 20$ new rabbits per week and so on. So a more rigorous formulation of our rabbit population model would be as follows:
+ 
+ \begin{equation}
+     \frac{dN}{dt} = rN.
+     \label{rabit_fin}
+ \end{equation}
+ 
+ 
+  PDE models are used together with{ra} specific boundary conditions and initial conditions to best describe the system's behavior.
+  %let us try to build the intuition for the concepts gradually (e.g., what is Initial Condition, Boundary Condition? What is an initial condition problem, what is a boundary value problem. What are they implications to the general ans specific solutions of these systems?
+  \\
+  These PDEs such as the Navier-Stokes equations are useful in many aspects to study the dynamical behavior of many physical phenomena such as the movement of fluids that is most discussed in fluid dynamics, a key component of climate physics. On the other hand, Ordinary differential equations such as;
+  \begin{itemize}
+      \item Lorenz's equations are used in examination of complicated problems and examining the butterfly effects.
+      \item The Lotka-Volt-era equations that are very much useful in the examination of the prey-predator behavior which is a an important concept for co-existence.
+      \item Differential equation such the Susceptible Infected Recovered (SIR)-, Susceptible Exposed Infected Recovered (SEIR)- models that are used in the dynamical modelling of diseases, such as Covid-$19$ are important in vaccine development and prediction of the disease spread. 
+      \item For mechanical engineering, the concept of ODEs is dominant in modelling motion such as oscillations of a swinging pendulum drawing from damped to un-damped oscillations.
+  \end{itemize}
+  These and many other examples of differential equations, both ODEs and PDEs are proving to be useful to computer scientist, physicists, climate scientists and many other scientists that contribute to the study of dynamical behaviors of all physical aspects on this planet.
+  \\
+  This proves the reason for the use of differential equations.
+  \subsection{Order and Degree of Differential Equations}
+  \subsubsection{Order of a differential equation}
+  The order of a differential equation is the highest power on the variable in any differential equation. The order of any differential equation determines the number of arbitrary constants needed to be added to the general solution.
+  \subsubsection{The degree of a differential equation}
+  The degree of a differential equation is the highest power of the highest order derivative in the differential equation. This is determined after the equation has been cleared from fractions and all radicals as far as the derivatives are concerned.
+  \subsubsection{Some illustrative examples}
+  Consider a differential equation
+  \begin{align}
+      \frac{d^3y}{dx^3} + \bigg(\frac{d^2y}{dx^2}\bigg)^4 - \bigg(\frac{dy}{dx}\bigg)^{-4}+y^2+ 4 = 0
+      \label{aaa}
+  \end{align}
+ From equation (\ref{aaa}), the highest power of the derivative is $3$. This is the order of this equation. However, this is not the degree of this equation. The degree of this equation is $1$ since the highest order derivative $ \frac{d^3y}{dx^3}$ is indexed with a unity.\\
+ Following this analogy, we have with no doubt that you can think of the order an degree of the following differential equations. 
+ \begin{equation*}
+     \bigg(\frac{d^6y}{dx^6}\bigg)^2+ 4\bigg(\frac{d^2y}{dx^2}\bigg)^6+4y=0 
+ \end{equation*}
+ 
+ \begin{equation*}
+      \frac{d^4y}{dx^4}+ 4\bigg(\frac{d^2y}{dx^2}\bigg)^2-\frac{dy}{dx}-4y=10
+ \end{equation*}
+ \begin{equation*}
+ \bigg[\frac{d^2y}{dx^2}+1 \bigg]=a\frac{d^2y}{dx^2}
+ \end{equation*}
+ \begin{equation*}
+ y'' + (y''')^3 = (x+y''')^3
+ \end{equation*}
+ \subsubsection{Let's talk about notation}
+ A long time ago, clever apes (our progeny), figured out that lifting all the numbers in their head was a great mental gymnastic and hassle. Secondly, communicating ideas, mostly in written form was cumbersome if not a a dead-end! What did they resorted to? Not surprisingly, symbols. Oh yes! Symbols. So you many be wondering, why the detour on symbols. It's because symbols (the basis for notations) has a significant role to play in mathematics. Different mathematicians have their "taste" and they even have disciples to that end. 
+ Back to differential equations. If you are new to this province of the exclusive few, then calculus in general (to be specific differentiation) has the following notations:
+ 
+ The Leibniz notation was originally employed by Gottfried Leibniz which is the main stay of mathematics. Mathematicians love it because it has a higher explanatory power. This notation is very suitable when the equation $y = f(x)$ is regarded as a functional relationship between dependent and independent variables $y$ and $x$. Using this notation, we can express the derivative as follow:
+\begin{equation}
+    \frac{dy}{dx}\text{.}
+    \label{eq:lib1}
+\end{equation}
+ Equation \ref{eq:lib1} is the first-order derivative of $y = f(x)$. It called first-order because it is the first time we are differentiate $y$ w.r.t. $x$.
+ The function whose value evaluated at $x$ is the derivative of $f$ at $x$ can be written as 
+ \[
+ \frac{df}{dx}(x) \text{ or } \frac{d f(x)}{d x} \text{ or } \frac{d}{d x} f(x)\text{.}
+ \]
+ With the Leibniz notation, higher order derivatives can be written as
+ \[ 
+ \frac{d^{2} y}{d x^{2}}, \frac{d^{3} y}{d x^{3}}, \frac{d^{4} y}{d x^{4}}, \ldots, \frac{d^{n} y}{d x^{n}}\text{.}
+ \]
+ 
+Another important notation worth looking at is the Lagrange's notation. It is also common among mathematicians and scientists and it's named after the Italian mathematician and astronomer Joseph Louis Lagrange. However, it was reportedly invented by Euler and just popularized by the Lagrange. Sorry Euler, you have many accolades in the mathematical multiverse already! Using Lagrange's notation, a prime mark denotes a derivative. For a given function $f$, then its derivative evaluated at $x$ is written as follow:
+\[
+f^{\prime}(x)\text{.}
+\]
+ 
+ The second derivative is written as $f^{\prime \prime}(x)$ while the third derivative is as $f^{\prime \prime \prime}(x)$ but we run into trouble moving past that point. Higher order derivatives $4 \dots $ often use either Hindu-Arabic or Roman numerals as shown below.
+ \[
+  f^{(4)}(x), f^{(5)}(x), f^{(6)}(x), \ldots,
+ \]
+ or 
+ \[ 
+    f^{\mathrm{iv}}(x), f^{\mathrm{v}}(x), f^{\mathrm{vi}}(x), \ldots
+ \]
+ We also have Newton's notation for differentiation sometimes referred to as the dot notation or jokingly the flyspeck notation. The key idea using this notation is to place a dot over the dependent variable. This means, suppose $y$ is the dependent variable that is a function of $t$, then the derivative of $y$ w.r.t. $t$ is
+ \[
+  \dot{y}\text{.}
+ \]
+ The second and third derivatives can be represented using multiple dots, as in
+\[
+\ddot{y}, \ddot{y}
+\]
+Newton this idea to the next level for higher order derivatives:
+\[ 
+   \ddot{y}, \ddot{y},\dddot{y} \stackrel{4}{\dot{y}}, \ldots, \stackrel{n}{\dot{y}}
+\]
+If this couldn't wheat your appetite, you can quench your curiosity by learning more from \href{https://en.wikipedia.org/wiki/Notation_for_differentiation}{Wikipedia} and later continue. Now that you're abreast of the bells and whistles, let's continue.
+\section{Why dynamical systems?}
+  The motivation behind the study of dynamical systems draws from their diverse field of applications. These range from Electrical engineering, electronics, computer engineering, bioinfomatics, climate science and many other aspects of science.\\
+  The theory of dynamical systems describes general patterns found in the solutions of the systems of linear equations. The beauty of using this is that even non-linear equations can be linearized using the mathematical tools and the behavior studied on a linearized ground.
+  \\ The typical dynamic variable is time, if it is the only dynamic variable, the analysis is then based on an ODE and PDEs modes are used with geometrical considerations are put in place in addition to time. For this work, we shall focus on the theory that focus on those equations representing only the change of processes in time.
+\section{Close-form analytical solutions}
+The nature of a differential equation one looks at determines the technique one can use to analytically solve it. This section clearly discusses some of the mostly used techniques when analytically solving ordinary differential equations and also explicitly discusses the significant difference between ODEs and PDEs.
+\subsection{Separation of Variables}
+Consider a differential equation
+\begin{align}
+    \frac{dy}{dx} = f(y)g(x)\label{a}
+\end{align}
+The function of $y$, ($f$) in equation (\ref{a}) can be put on the left hand side of this equation through a simple mathematical tool of division. Likewise, the term $dx$ can be brought to the right hand side. The resulting equation then clearly has terms in $y$ and $x$ on different side.
+\begin{align*}
+    f(y)dy = g(x)dx
+\end{align*}
+If this is attained, the we say that these two variables, $x$ and $y$ are separated.\\
+If this is attained, we can confidently apply integration techniques to this equation to find an analytical solution. The solution then becomes;
+\begin{align*}
+    \int f(y) dy = \int g(x)dx +c,
+\end{align*}
+were $c$ is the constant of integration.\\
+We can therefore say that to to find an analytical solution to the differential equation using separation of variables, the following steps are key.
+\begin{itemize}
+    \item Move all the $y$ terms including $dy$ to one side of the equation and all those in $x$ including $dx$ to the other side.
+    \item Integrate one side with respect to $y$ and the other side with respect to $x$ without forgetting the constant of integration.
+    \item We can the simply to obtain the required analytical solution.
+\end{itemize}
+These steps therefore imply that this technique cannot be used to differential equations where step one cannot be attained.\\
+\textbf{Note:} It should be noted that $x$ and $y$ represent the independent and independent variables respectively. These represent any variables in a given differential equation. A quick thought can be the equation for population growth, One can define $N$ as the population at a particular time, $t$. In this case, the independent and dependent variables are $t$ and $N$ respectively.
+\subsubsection{Some illustrative examples}
+If one thinks about the rate of heat transfer from a cup of hot tea, $y$ being proportional to the quantity of heat present at that time, $t$. Then, we can write
+\begin{align*}
+    \frac{dy}{dt} \propto y
+\end{align*}
+This then simplifies to
+\begin{align}
+    \frac{dy}{dx} = -ky \label{aa}
+\end{align}
+where $k$ is the proportionality constant. The negative attached to this constants implies that heat drops with time (cooling).\\
+Applying the first step of separating variables will mean that (\ref{aa}) is
+\begin{align*}
+    \frac{1}{y}dy = -kdt
+\end{align*}
+Step two then yields 
+\begin{align*}
+    \ln{y} = -k + C
+\end{align*}
+The last step then will give the analytical solution to this differential equation by separation of variables as;
+\begin{align*}
+    y = A \exp{^{-kt}}
+\end{align*}
+where $A = e^c$, a constant.
+\subsection{First order linear equations}
+Consider a differential equation 
+\begin{align*}
+    \frac{dx}{dt} = f(t,x)
+\end{align*}
+If the function $f$ is a sum of terms which are either independent of $x$ or linear in $x$, then the equation is said to be linear.\\
+we are now worried about how to solve a differential equation of such a form, for example;
+\begin{align}
+    \frac{dx}{dt} + 4tx = t \label{z}
+\end{align}
+From our definition of a Linear first order DE, we note that equation (\ref{z}) is a typical example of these. These take on the form 
+\begin{align}
+    \frac{dy}{dx} + P(x)y = Q(x)\label{zz}
+\end{align}
+To deal with such, we introduce a strong mathematical expression known as the integrating factor. \\
+We define the integrating factor, $\mu (x)$ as
+\begin{align*}
+    \mu (x) = e^{\int P(x) dx}
+\end{align*}
+Then, using this, we can transform (\ref{zz}) into a separable differential equation  (that is always friendly in terms of solving) by multiplying it to this equation. 
+Precisely, we have
+\begin{align*}
+    e^{\int P(x) dx} \frac{dy}{dx} + e^{\int P(x) dx} P(x) y = e^{\int P(x) dx} Q(x)
+\end{align*}
+The left hand side of this equation is then an exact equation that can simply be written as;
+\begin{align*}
+    \frac{d}{dx}(\mu(x) P(x)) = \mu (x) Q(x)
+\end{align*}
+Using this technique to solve equation (\ref{z}) we therefore has the integrating factor as
+\begin{align*}
+    \mu (t) =& e^{\int 4t dt}\\
+    =& e^{2t^2}
+\end{align*}
+Using this results to ensure exactness on equation implies that
+\begin{align*}
+    e^{2t^2} \frac{dx}{dt} + 4te^{2t^2}x = t e^{2t^2}
+\end{align*}
+We can therefore smile that exactness is assured on the left hand side of this equation and so confidently write this as
+\begin{align*}
+    \frac{d}{dt}(xe^{2t^2}) = t e^{2t^2}
+\end{align*}
+which is separable. Simplification of this has been discussed in the previous subsection aligning with separation of variables  and the final solution to this can be written with techniques of integration such as substitution.
+\begin{align*}
+    xe^{2t^2} = \frac{1}{4}e^{2t^2} +C
+\end{align*}
+And this simplifies to
+\begin{align*}
+    x(t) = \frac{1}{4} +Ce^{-2t^2}.
+\end{align*}
+\subsection{Exact Equations}
+At this point, many of us might be a little scared about some terms used in the previous section! Its no surprise that some of us are in this state. It is good that this comes out of curiosity. Let's use this section to over turn the concept of Exact Equations. \\
+To get this right, let us start by considering the following equation
+\begin{align}
+    (x -\sin y)\frac{dy}{dx}+y = 0\label{m}
+\end{align}
+We note that we can beautify (\ref{m}) by simply doing some expansion and this yields
+\begin{align*}
+    (x\frac{dy}{dx}+y) - \sin y \frac{dy}{dx} = 0
+\end{align*}
+It can clearly be observed that 
+\begin{align*}
+    x \frac{dy}{dx} + y = \frac{d}{dx}(xy)
+\end{align*}
+and 
+\begin{align*}
+    -\sin y \frac{dy}{dx} = \frac{d}{dx}(\cos y)
+\end{align*}
+Putting that on hold, let us define $\psi (x,y) = xy +\cos y$. We can therefore write (\ref{m}) as 
+\begin{align*}
+    \frac{d}{dx}(\psi(x,y(x)) = 0
+\end{align*}
+And if we integrate this equation after separation of variables gives 
+\begin{align*}
+    \psi (x, y(x))  = C; \hspace{0.5cm} \text{where C is a constant of integration}
+\end{align*}
+Equations that can be written in this form for some function $\psi$ are termed to as Exact.\\
+A very big question that is not answered yet concerns how to determine exactness. Well, let's consider the differential equation below
+\begin{align}
+    N(x,y) \frac{dy}{dx}(x) + M(x,y) = 0 \label{mm} 
+\end{align}
+where $N$ and $M$  are differentiable functions $N,M : \mathbb{R}^2 \to \mathbb{R}$
+If these conditions are satisfied, (\ref{mm}) is therefore an Exact deifferential equation.\\
+For any twice differentiable function, we can write  $\psi : \mathbb{R}^2 \to \mathbb{R}$. By the chain rule, 
+\begin{align*}
+    \frac{d}{dy}\psi(x,y(x)) = \frac{\partial \psi}{\partial y } \frac{dy}{dx}(x) + \frac{\partial \psi}{\partial x}
+\end{align*}
+So, we can precisely say that (\ref{mm}) is twice differentaible if there exists a function $\psi : \mathbb{R}^2 \to \mathbb{R}$ with 
+\begin{align*}
+    \frac{\partial \psi}{\partial y}(x,y) = N(x,y)
+\end{align*}
+and 
+\begin{align*}
+    \frac{\partial \psi}{\partial x} (x,y)= M(x,y)
+\end{align*}
+Also, since $\psi$ is twice differentiable, then
+\begin{align*}
+    \frac{\partial ^2 \psi}{\partial x \partial y} =     \frac{\partial ^2 \psi}{\partial y \partial x}
+\end{align*}
+We note that this function ($\psi$) exists if 
+\begin{align*}
+    \frac{\partial N}{ \partial x} = \frac{\partial M}{\partial y}
+\end{align*}
+With this background information, we take a critical look at our illustrative example (\ref{m}).\\
+Clearly, this is exact since
+\begin{align*}
+    \frac{\partial }{\partial x} (x - \sin y) = 1 = \frac{\partial }{\partial x} (y)
+\end{align*}
+To find the function, $\psi$, we need to let
+\begin{align*}
+      \frac{\partial }{\partial y} =  (x - \sin y) \hspace{0.2cm} \text{and} \hspace{0.2cm} \frac{\partial }{\partial x} = y
+\end{align*}
+This implies that 
+\begin{align}
+    \psi(x,y) = xy - \cos y + \phi (x) \label{n}
+    \end{align}
+    The term $\phi$ in equation (\ref{n}) isd a function of $x$ and is a result of integrating the multivariate function $\psi$ with respect to $y$. \\
+    Differentiating this with respect to $x$ gives
+    \begin{align*}
+        \frac{\partial \psi}{\partial x} = y + \phi ' (x)
+    \end{align*}
+    We already have an equation in terms of $ \frac{\partial \psi}{\partial x}  $. If we use this in finding the value of the function independent of $y$, $\phi$, implies that 
+    \begin{align*}
+        \phi ' (x) = 0 \hspace{0.2cm} \iff \phi = C
+     \end{align*}
+     where C is the constant of integration. We can therefore deduce that, the general solution to the differential equation is
+     \begin{align*}
+         \psi (x,y) = xy - \cos y + C
+     \end{align*}
+\subsection{Changing Variables}
+Some ODEs can be easily solved in a more simplified way by simply changing variables in the given equation.\\
+ODEs of the form 
+\begin{align}
+ \frac{dy}{dx} = f\bigg(\frac{y}{x}\bigg) \label{aaw}    
+\end{align}
+are termed to as \textbf{Homogeneous equations}.\\
+A change of variable can be applied to simply reduce the 'scare' caused when the equation under consideration proves to be sophisticated.\\
+If we let 
+\begin{equation*}
+    u = \frac{y}{x},
+\end{equation*}
+our goal is to form a new simplified ODE independent of the variable $y$ but rather in terms of the new variable introduced above.
+\\
+This therefore implies that 
+\begin{align*}
+    \frac{dy}{dx} = x \frac{du}{dx} + u 
+\end{align*}
+Once this is attained, we can always run to the given equation and form a simplified version of the form.\\
+\subsubsection{Example}
+Give that we are required to find the general solution to the differential equation below
+\begin{align}
+    \frac{dy}{dx} = \frac{xy}{x^2+y^2}\label{aw}
+\end{align}
+Observe that we can write (\ref{aw}) in the form of (\ref{aaw}) as
+\begin{align*}
+   \frac{dy}{dx} = \frac{(\frac{y}{x})}{(1+ \frac{y}{x})^2}.
+\end{align*}
+So, we have a homogeneous equation and we can therefore apply change of variable techniques.\\
+Letting 
+\begin{align*}
+    u= \frac{y}{x},
+\end{align*}
+we have 
+\begin{align*}
+    x \frac{du}{dx} + u = \frac{u}{1+u^2}.
+\end{align*}
+This simplifies to,
+\begin{align*}
+    x \frac{du}{dx} = -\frac{u^3}{1+u^2}
+\end{align*}
+Applying the technique of separation of variables, we have that 
+\begin{align*}
+    \int \frac{1+u^2}{u^3}du = \int \frac{1}{x}dx
+\end{align*}
+For simplicity in finding the integral on the left hand side of this equation, we can instead write it as 
+\begin{align*}
+    \int \frac{1}{u^3}du + \int \frac{1}{u} du = \ln{x} + c 
+\end{align*}
+which therefore integrates to
+\begin{align}
+    -\frac{1}{2u^2} + \ln{u} = \ln{x} + c \label{ha}
+\end{align}
+Since $u = \frac{y}{x}$, \\\\
+We can therefore substitute for this variable in equation (\ref{ha}), and this gives
+\begin{align*}
+    \bigg(\frac{y}{x}\bigg)^{-2} = \ln{\bigg(\frac{y}{x^2}\bigg)^2}
+\end{align*}
+as the solution to the differential equation in (\ref{aw}) by substitution method.
+\subsection{Bernoulli Equation}
+Equations of the form 
+\begin{align}
+    \frac{dy}{dx} + \alpha(x) y = \beta(x) y ^{\gamma} \label{c}
+\end{align}
+where $\gamma \in \mathbb{R} - \{0,1\}$
+are termed to as Bernoulli Equations.\\To solve equations like ($c$), we note that this equation can be written as 
+\begin{align*}
+    y^{-\gamma}  \frac{dy}{dx} + \alpha(x) y^{1-\gamma} = \beta(x)
+\end{align*}
+If we let 
+\begin{align*}
+    u = y^{1-\gamma},
+\end{align*}
+it implies that 
+\begin{align*}
+    \frac{du}{dx} = (1- \gamma) y ^{-\gamma}\frac{dy}{dx}.
+\end{align*}
+Therefore, we can write (\ref{c}) independent of the terms in $y$. That is
+\begin{align*}
+    \frac{1}{1-\gamma} \frac{du}{dx} + \alpha(x) u = \beta (x)
+\end{align*}
+which is a linear first order ODE that can be solved using techniques discussed above. \\
+An quick example that we wish to discuss here is;
+If we consider a differential equation below;
+\begin{align}
+    \frac{dy}{dx}+y =y^4 \label{wan}.
+\end{align}
+Observe that (\ref{wan}) takes on the form of (\ref{c}). Therefore, dealing with this will simply call for the above discussion treatments of such equations. That is to say \\\\
+Divide this equation through by $y^4$. This gives
+\begin{align*}
+    y^{-4} \frac{dy}{dx} + y^{-3} = 1.
+\end{align*}
+Then, if we let 
+\begin{equation*}
+    u = y^{-3}
+\end{equation*}
+we have that 
+\begin{align*}
+    \frac{dy}{dx} = - \frac{1}{3}y^4 \frac{du}{dx}
+\end{align*}
+The differential equation taking on the form of Bernoulli's equations can therefore be written in terms of the new dependent variable, $u$, and independent of the former, $y$, as
+\begin{align*}
+    -\frac{1}{3}\frac{du}{dx} + u = 1
+\end{align*}
+which can be written in the form 
+\begin{align*}
+   \frac{dy}{dx} + p(x)y = Q(x).
+\end{align*}
+Let us not forge that such equations become a simple 'sip' or easy like taking a cup of tea in the morning when one employs the above discussed integrating factor.\\
+For this problem specifically, the integrating factor associated to this is
+\begin{align*}
+    \mu (x) &= e ^{\int -3 dx}\\
+    &= e^{-3x}
+\end{align*}
+We are happy that we have previously discussed the treatment of such equation and therefore confidently state that following the above steps, one can arrive to the simplified general solution in terms of $u$ as 
+\begin{align*}
+    u = 1 + C e^{3x}
+\end{align*}
+Well, we need to always remember that the solution we seek is in terms of variable $y$. Therefore, if we substitute for $u$, we shall have  
+\begin{align*}
+    y(x) = \frac{1}{\bigg(1+C e^{3x} \bigg)^3}
+\end{align*}
+As the general solution to this differential equation.
+\subsection{Second Order Equation}
+Aside ordinary differential equations of order $1$ discussed above, together with techniques that can be applied to them in search for right general solutions, differential equations of order $2$ are discussed in this blog. 
+\\\\
+Let's recall that a differential equation is an equation with function and one or more of its derivatives. The techniques of solving second order ODEs will sink well if one is familiar with first order ODE techniques. Well, we are happy that we have already done something about this and so a great stepping stone to introduce this concept. 
+Consider a differential equation of the form 
+\begin{align}
+     \frac{d^2y}{dx^2} + p(x)\frac{dy}{dx} + q(x) y = f(x). \label{q}
+\end{align}
+where $p(x)$, $Q(x)$ and $f(x)$ are functions of $x$. \\\\
+It should also be noted from this instanty that if $f(x) = 0$, the differential equation is termed to as a second order \textbf{homogeneous} differential equation, otherwise it is \textbf{non-homogeneous}.\\
+Different techniques can be employed in looking for general solutions to second order ODE depending on the cumbersomeness of the equation. Discussed below are some of the most common techniques.   
+\subsection{Undetermined Coefficients}
+This only works when the function, $f(x)$ is a polynomial, exponential, sine,cosine or a linear combination of those. \\
+This method is an approach to finding a particular solution to any non-homogeneous ordinary differential equations. \\
+Consider a linear non-homogeneous ODE
+\begin{align}
+   a\frac{d^y}{dx^2}+ b\frac{dy}{dx}+cy = f(x)\label{ah}
+\end{align}
+where $a\ne 0$, $b$ and $ c$ are constants.\\
+The method consists of finding the general solution, $y_c$ to the complementary linear homogeneous part
+\begin{align}
+    a\frac{d^y}{dx^2}+ b\frac{dy}{dx}+cy = 0,\label{el}
+\end{align}
+and a particular solution, $y_p$ to the linear non-homogeneous ODE that is based on the function $f(x)$.\\
+The general solution, $y$ to the second order linear ODE is the sum of $y_c$ and $y_p$. That is;
+\begin{align*}
+    y = y_c + y_p
+\end{align*}
+by superposition principle.\\
+However, if its given that the function $f(x)$ is a linear combination of two functions, say $g(x)$ and $h(x)$, then using superposition principles, the particular solution, $y_p$ is the sum of the individual particular solutions to $h$ and $g$, say $y_{p1}$ and $y_{p2}$ respectively.
+That is
+\begin{align*}
+    y_p = y_{p1} + y_{p2}
+\end{align*}
+Before we discuss in details how we can arrive to required particular solutions and what needs to be done in that line, let us look at how the complimentary solution can be obtained. 
+\subsubsection{The complimentary solution}
+To find a particular solution to any linear second order homogeneous ordinary differential equation of the form of equation (\ref{el}), we consider a gues solution of the form 
+\begin{align*}
+    y  = e^{rt}
+\end{align*}
+where $r$ is r the auxiliary root of the characteristic equation formed. \\
+Considering (\ref{el}), which we said earlier that can be written in the form
+\begin{align*}
+    ay'' + by'' + cy = 0
+\end{align*}
+and using this guess solution in this equation we have that;
+\begin{align*}
+    e^{rt}(ar^2 + br + c) = 0.
+\end{align*}
+Since $e^{rt} \ne 0$ from the above formed integral domain, then 
+\begin{align}
+  ar^2 + br + c= 0.   \label{le}
+\end{align}
+Equation (\ref{le}) is known as the characteristic equation that corresponds to the given differential equation whose roots can be obtained after solving this equation.\\\\
+The nature of the roots determines the nature of the general solution, or even the particular solution if initial conditions are stated, that satisfy the differential equation. These roots can either be, \textbf{Real and distinct}, \textbf{Real and repeated} or \textbf{Complex}. \\
+Before we look at how solutions (general or particular) are formed following the nature of roots stated above, let us look at a strong principle that comes in play in writing solutions to the differential equations.\\
+\textbf{The superposition principle}
+If $y_1 (t)$ and $y_2 (t)$ are two solutions to any linear, homogeneous differential equation, then, the linear combination of these two is also a solution and it satisfies the differential equation. That is to say, there exists some two arbitrary constants $C_1$ and $C_2$ such that 
+\begin{align*}
+    y(t) = C_1y_1(t) + C_2 y_2(t)
+\end{align*}
+is a solution to the differential equation. Then $y(t)$ is called the general solution to the differential equation. $y_1 (t)$ and $y_2 (t)$ form the so called \textbf{Fundamental set of solutions} \\\\
+Having developed that strong principle that will allow us to combine individual solutions to come up  with a general solution, its best if we take a step back and look at what these individual solutions will be depending of the nature of the roots. 
+\begin{itemize}
+    \item \textbf{Real and distinct roots}: In this case, $r_1 \ne r_2$. The solutions associated to such a characteristic equations are 
+    \begin{align*}
+        y_1 (t) = e^{r_1 t} \hspace{0.2cm} \text{and} \hspace{0.2cm}  y_2 (t) = e^{r_2 t}
+    \end{align*}
+    and by the superposition principle, the general solution is 
+    \begin{align*}
+        y(t) = C_1 e^{r_1t} + C_2 e^{r_2t}.
+    \end{align*}
+    An e\textbf{example} that one can look at quickly is, if we are required to find the general solution of 
+    \begin{align*}
+        y''+11y' + 24y = 0,
+    \end{align*}
+    We start by letting 
+    \begin{align*}
+        y = e^{rt}.
+    \end{align*}
+    This then will imply that the auxiliary equation from which the roots $r_1 = -8$ and $r_2 = -3$ are obtained after solving is
+    \begin{align*}
+        r^2 + 11r + 24 = 0
+    \end{align*}
+    Then, using superposition principle, the general solution is;
+    \begin{align*}
+        y(t) = C_1y_1(t) + C_2 y_2(t)
+    \end{align*}
+    where 
+    \begin{align*}
+        y_1 (t) = e^{-8 t} \hspace{0.2cm} \text{and} \hspace{0.2cm}  y_2 (t) = e^{-3 t}
+    \end{align*}
+    \item \textbf{Real and repeated roots}: in this case, $r_1 = r_2 = r$. Then 
+    \begin{align*}
+        y_1 (t) = e^{r_1 t} = y_2 (t) = e^{r_2 t} = e^{rt}
+    \end{align*}
+    The general solution to a differential equation whose characteristic equation has repeated roots is
+    \begin{align*}
+        y(t) = C_1 e^{rt} + C_2 te^{rt}
+    \end{align*}
+    A quick \textbf{example} is finding the general solution of 
+    \begin{align*}
+        y'' - 4y' +4y = 0.
+    \end{align*}
+    The characteristic equation which correspond to this differential equation is
+    \begin{align*}
+        r^2  - 4r +4 = 0
+    \end{align*} 
+    and on solving, we have a repeated root, $r=2$. Therefore, the general solution to such a differential equation is;
+    \begin{align*}
+        y(t) = C_1 e^{2t} + C_2 te^{2t}
+    \end{align*}
+    \item \textbf{Complex roots}: Characteristic equations whose auxiliary roots take on the form 
+    \begin{align*}
+        r_{1,2} = \lambda \pm \mu i.
+    \end{align*}
+    Then, the solutions to the differ entail equations are 
+     \begin{align*}
+        y_1 (t) = e^{(\lambda + \mu i) t} \hspace{0.2cm} \text{and} \hspace{0.2cm}  y_2 (t) = e^{(\lambda - \mu i) t}
+    \end{align*}
+    If we put into action \textit{Euler's formula}, that states that
+    \begin{align*}
+        e^{i \theta} = \cos \theta + i \sin \theta
+    \end{align*}
+    and 
+    \begin{align*}
+        e^{-i \theta} = \cos \theta - i \sin \theta
+    \end{align*}
+    will mean that the above stated solutions to the differential equations can be written as
+    \begin{align*}
+         y_1 (t) &= e^{\lambda t}   e^{\mu i t}\\
+         &=e^{\lambda t}( \cos \mu t + i \sin \mu t)
+    \end{align*}
+    and 
+     \begin{align*}
+         y_2 (t) &= e^{\lambda t}   e^{\mu i t}\\
+         &=e^{\lambda t} (\cos \mu t -i \sin \mu t).
+    \end{align*}
+    Then the general solution 
+    \begin{align*}
+            y(t) = C_1y_1(t) + C_2 y_2(t)
+    \end{align*}
+    will be 
+    \begin{align*}
+        y(t) = e^{\lambda t} (C \cos \mu t + D \sin \mu t ) 
+    \end{align*}
+    where 
+    \begin{align*}
+        C = C_1 + C_2  \hspace{0.4cm} \text{and} \hspace{0.4cm} D = (C_1 - C_2)i
+    \end{align*}
+    A quick \textbf{example} one can look at is finding the general solution of
+    \begin{align*}
+        y'' - 4y' + 9y = 0
+    \end{align*}
+    whose characteristic equation is 
+    \begin{align*}
+        r^2 - 4r + 9 =0
+    \end{align*}
+    and the corresponding roots are 
+    \begin{align*}
+        r_{\pm} = 2 \pm \sqrt{2}.
+    \end{align*}
+    Then, the general solution is 
+    \begin{align*}
+        y(t) = e^{2t} ( A \cos \sqrt{5}t + B \sin \sqrt{5} t)
+    \end{align*}
+    with $A$ and $B$ being constants.
+\end{itemize}
+With all that in our pockets, its with no doubt that we can execute the techniques of undetermined coefficients, a method that reduces the set problem down to an algebraic problem. \\
+also, since we have explicitly looked at how to come up with a suitable complimentary solution, its best if we embark on how to find the particular solution thus a general solution can be written. \\
+The method should be simple! What is required is to look at the non-homogeneous part, $f(x)$ and make a guess of the form $y_p$ leaving the coefficients \textbf{undetermined}. The guess is executed in the differential equation in the quest to find these unknown coefficients. Of course it is a wrong guess if one cannot find the values of these coefficients.\\
+Let us summarize the possible guesses on can make with the corresponding nature of $f(x)$ given.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{c|c}
+        f(x) & y_p(x) \\
+        ae^{\beta x} & Ae^{\beta x}\\
+        a \cos (\beta x) & A \cos (\beta x) + B \sin(\beta x)\\
+        b \sin(\beta x) &   A \cos (\beta x) + B \sin(\beta x)\\
+          a \cos (\beta x) +   b \sin(\beta x)  & A \cos (\beta x) + B \sin(\beta x)\\
+          n^{th} \text{degree polynomial} & A_nx^n + A_{n-1}t^{n-1} + \cdots A_1x + A_0
+    \end{tabular}
+    \caption{}
+    \label{tab:my_label}
+\end{table}
+
+We should \textbf{strictly} note that the above functions given in table \ref{tab:my_label} are the only ones where the method of undetermined coefficients can be executed.\\
+To put this in practice, it is wise that we take a few minutes and look critically at some of the example solved below.\\
+\subsubsection{example one}
+This example will try to introduce to us what we need to do if the above mentioned functions are produced together, let us produce by finding the general solution of
+\begin{align*}
+    y'' - 4y' - 12y = te^{4t}
+\end{align*}
+As we have already discussed above, finding the complementary solution, $y_c$ is a 'walkover' by now and therefore we can confidently state quickly after solving the auxiliary equation this solution to be;
+\begin{align*}
+    y_c(t) = c_1 e^{6t} + c_2 e^{-2t}
+\end{align*}
+That aside, the major focus should now be put on the type of \textit{Ansatz/ guess} that should be executed in order for us to come up with a feasible Particular solution, $y_p$\\
+Well, according to the nation of the in homogeneous part, and with reference to the above table, we see that we have to combine first and last times in the table for us to come up with a nice one. This is so since the part in question is a combination of a polynomial of degree one and an exponential function.\\
+To reduce the 'English' let us say that our guess solution is;
+\begin{align*}
+    y_p(t) = (At+B)e^{4t}
+\end{align*}
+Which comes from the fact that the product of two constants yields a constant. \\
+Now, the next task is to find the expressions of $y''(t)$ and $y'(t)$ so that we can make use of the left hand side of the differential equation to find the these constants. So
+\begin{align*}
+    y''_p(t) = e^{4t}(16At+16B+8A) \\
+    -4y'_p = -4e^{4t}(4At + 4Bt + A)
+\end{align*}
+and 
+\begin{align*}
+    -12y_p = -12 e^{4t}(At+B)
+\end{align*}
+These summed together and compared to the in homogeneous part of the differential equation gives us vales of constants $A$ and $B$ as
+\begin{align*}
+    A = -\frac{1}{12} \hspace{0.2cm} \text{and} \hspace{0.2cm} B = -\frac{1}{36}
+\end{align*}
+We can therefore write the particular solution as 
+\begin{align*}
+    y_p(t) = \bigg(-\frac{1}{12}t - \frac{1}{36}\bigg) e^{4t},
+\end{align*}
+and so the general solution $Y(t)$ can be written from;
+\begin{equation*}
+    Y_p(t) = y_c(t) + y_p(t)
+\end{equation*}
+A big smile can then then come on our faces now that we can solve a proportionate of e second order constant coefficient differential equations!\\\\
+The 'jubilation' should however not take a day minus realising that quite many differential equations whose in homogeneous part are not listed above cannot be dealt with with such a method hence the need to look at another technique. This is introduced in the following section. 
+\subsection{Variation of Parameters}
+Having looked at undetermined coefficients, a method we used to find the particular solutions to the differential equation 
+\begin{align}
+    p(t)y'' + q(t)y' +r(t)y = g(t) \label{wan}
+\end{align}
+which reduced the problem to just an algebraic one.\\\\
+However, we already said that this method works on a fairly small lass of functions. The method of \textbf{variation of parameters} is much more general and used in many more cases.\\
+It is also important to notice the two disadvantages to the method, first of which is that the complementary solution is definitely required to solve the problem which is contrary to the method of undetermined coefficients in which it is not necessarily compulsory to have it [the complementary solution] at hand. Secondly, as it shall be discussed, in order to complete the method, a couple of integrals will always be completed with no guarantee that the integral will always be possible (can be done). This means that however much it will always be possible to write down the formula leading to the particular solution, it may not be possible to actually find this solution in incidences when the integral is too difficult or if it's not possible to find the complementary solution.\\\\
+It is important that before we look at an example, we derive the formula for variation of parameters. It is also important to acknowledge that the complementary solution to (\ref{wan}) is; 
+\begin{align*}
+    y_c (t) = c_1y_1(t) + c_2y_2(t),
+\end{align*}
+which also serves as the general solution to the homogeneous differential equation discussed before. Also, it is known that $y_1(t)$ and $y_2(t)$ constitute the fundamental set of solutions.\\
+Our  actions seek to find a pair of solutions $u_1(t)$ and $u_2(t)$ such that 
+\begin{align*}
+    Y_p(t) = u_1(t) y_1(t) + u_2(t) y_2(t)  
+\end{align*}
+is a solution to the non homogeneous ODE under question. Note that with these two unknowns $u_1(t)$ and $u_2(t)$, it implies that we need two equations that can be solved simultaneously. One of these equations can be easily got. Since the proposed solution must satisfy the DE, we shall plug our guess (ansatz) in this ODE. \\The second equation can come from various places. For the sake of easing our work, we shall instead make an assumption. This means that, if we use our solution
+\begin{align*}
+    Y_p'(t) = u'_1y_1 + u_1 y_1'+ u'_2y_2+u_2y_2'
+\end{align*}
+Here is the assumption, in order to make the first derivative easier to deal with we are then going to assume that whatever the solutions  $u_1(t)$ and $u_2(t)$ are, they will satisfy
+\begin{align}
+     u'_1y_1 + u'_2y_2 =0\label{awn}
+\end{align}
+Therefore, the first derivative downsizes to
+\begin{align*}
+    Y_p'(t) = u_1 y_1'+u_2y_2'
+\end{align*}
+and so the second derivative is therefore;
+\begin{align*}
+    Y''_p(t) = u'_1y'_1+u_1y''_1+u_2'y_2'+u_2y_2''
+\end{align*}
+If we plug the solution and its derivatives into equation (\ref{wan}) gives
+\begin{align*}
+    p(t)(u'_1y'_1+u_1y''_1+u_2'y_2'+u_2y''_2) + q(t) (u_1y'_1 + u_2y'_2) + r(t)(u_1y_1+u_2y_2) = g(t) 
+\end{align*}
+If we re-arrange this gives
+\begin{align*}
+    p(t)\biggg(u'_1y'_1+u_2'y_2'\biggg) + u_1(t)\biggg(p(t)y_1'' + q(t) y_1' + r(t)y_1\biggg) + u_2(t)\biggg(p(t)y_2''+q(t)y_2'+r(t)y_2\biggg) = g(t)
+\end{align*}
+With this, and relying on the fact that $y_1(t)$ and $y_2(t)$ are solutions to the so they satisfy the differential equation under question. \\
+Precisely, we mean that 
+\begin{align*}
+    p(t)y_1'' + q(t) y_1' + r(t)y_1 = 0
+\end{align*}
+and 
+\begin{align*}
+    p(t)y_2''+q(t)y_2'+r(t)y_2 = 0
+\end{align*}
+So, it is safe to say that our term reduces to
+\begin{align*}
+    p(t)\biggg(u'_1y'_1+u_2'y_2'\biggg)  = g(t)
+\end{align*}
+If we make another assumption that $p(t) = 1$ just for the sake of making things simpler, this leaves us with two equations that can be solved simultaneously in order to find the two unknowns $u_1$ and $u_2$\\
+Understand also that with $p(t)$ assumed to be a unity, the differential equation we are looking at is now
+\begin{align*}
+y'' + q(t) y' + r(t)y = g(t)
+\end{align*}
+Meaning that if the coefficient of the second derivative is not one, we should first work to make it so so the formula we are going to design assumes so.
+\\\\
+Then, the two equations to solve simultaneously are 
+\begin{align}
+    u'_1y_1+ u_2'y_2=0 \label{joy}
+\end{align}
+and 
+\begin{align}
+    u'_1y'_1+u_2'y_2'  = g(t)\label{oy}
+\end{align}
+If we make $u_1'$ the subject in equation (\ref{joy}) and substitute it in equation (\ref{oy}) gives $u_2'$ as 
+\begin{align}
+    u_2' =\frac{y_1g(t)}{y_1y_2'-y_2y_1'} \label{flo}
+\end{align}
+and so if we use this result in any of the equation we shall have that 
+\begin{align}
+    u_1' =-\frac{y_2g(t)}{y_1y_2'-y_2y_1'} \label{fl}
+\end{align}
+In this blog, we have not gone in much details of the \textbf{Wronskian} but this must be a great moment to define it.
+\\
+Given $y_1$ and $y_2$ as solution to the second order ordinary differential equation, then the Wronskian, denoted as $W(y_1, y_2)$, is defines as
+\begin{align*}
+    W(y_1, y_2) =y_1y_2'-y_2y_1'.
+\end{align*}
+Basing on this, and with the fact that $y_1$ and $y_2$ are solutions to the differential equation, the this $W(y_1,y_2) $ is non zero. \\
+Putting all this together and not forgetting that the desired unkowns, $u_1$ and $u_2$, we need to integrate the results (\ref{flo}) and (\ref{fl}) and this means that
+\begin{align*}
+    u_1(t) = - \int \frac{y_2g(t)}{W(y_1,y_2)}dt \hspace{0.5cm} u_2(t) =  \int \frac{y_1g(t)}{W(y_1,y_2)}dt
+\end{align*}
+And if we draw back to what we wanted in the first place (the particular solution) which we defined as $Y_p = y_1u_1+y_2u_2$, we can write this with our results for the unknowns that we have just previously found. That is
+\begin{align*}
+  Y_p = -y_1  \int \frac{y_2g(t)}{W(y_1,y_2)}dt + y_2 \int \frac{y_1g(t)}{W(y_1,y_2)}dt
+\end{align*}
+So, to put everything in practice, lets consider this example below. 
+\\ Suppose that we are required to find the general solution of the differential equation 
+\begin{align*}
+    ty'' - (t+1) y' + y = t^2
+\end{align*}
+given that 
+\begin{align*}
+    y_1(t) = e^t \hspace{0.5cm} y_2 (t) = t+1
+\end{align*}
+form a fundamental set of solutions to the homogeneous part of the given differential equation. 
+\\
+To begin with, we need to recall that if we are to use the method of variation of parameters,
+we need to have the coefficient on the second derivative as one. That calls for us to divide through by $t$.This gives us the audacity to write this differential equation as
+\begin{align*}
+    y'' - \biggg(1+ \frac{1}{t}\biggg) y' +\frac{1}{t} y = t
+\end{align*}
+Having achieved that, we as well need to recognize that in our formulae we designed above, there is a need to find the Wronskian given the two solutions. By definition, 
+\begin{align*}
+    W(y_1,y_2) = y_1y_2' - y_2y_1'
+\end{align*}
+So, if we use the information we have, we have it that 
+\begin{align*}
+    W = -te^t
+\end{align*}
+With this result, and the formula for finding a particular solution in this method, we can confidently say that 
+\begin{align*}
+    Y_p(t) &= u_1y_1 + u_2y_2\\
+    &=-e^t  \int\frac{t(t+1)}{-te^t}dt+ (t+1)\int\frac{te^t}{-te^t}dt
+\end{align*}
+and if we get to use the basics of integration with some well known techniques, this simplifies to; 
+\begin{align*}
+    Y_p(t) = -t^2 - 2t - 2
+\end{align*}
+With the fundamental set of solutions given, it is with no doubt that we can deduce the general solution since the complementary solution can be written and we have our particular solution as well.\\
+So, we can say that our general solution is 
+\begin{align*}
+    y(t) = c_1e^t + c_2(t+1) -t^2 - 2t - 2
+\end{align*}
+With all that we have managed to put up in the previous chapters, which we think that are insightful good to give us a go right from the preliminaries up to the core concepts in the block, we think that this is a good point in time to put a pause on the matter. The next blog will give light on the other types of differential equations and also try to put a connection between ordinary differential equations and partial differential equations.
+
+\vspace{5cm}
+\section {Ordinary Differential Equations (ODEs) vs Partial Differential Equations (PDEs)}
+\subsection{First order PDEs:}
+\subsubsection{Linear}
+\subsubsection{Nonlinear}
+\subsubsection{System of equations}
+\subsection{Second order linear PDEs}
+\subsubsection{Elliptic}
+\subsubsection{Hyperbolic}
+\subsubsection{Parabolic}
+\subsection{Looking at a general ODE for a spring mass damper }
+The motion of a mass around an equilibrium position in a system of spring mass damper can be described by an ODE
+\begin{align}
+    m\frac{d^2 z}{dt^2}+ \gamma \frac{dz}{dt}+kz =0,
+    \label{pl}
+\end{align}
+where the mass, $m$, the damping factor, $\gamma$ and the spring constant, $k$ are all positive.\\
+We can prove from \ref{pl} that the mass under any initial conditions of $z$ and $\frac{dz}{dt}$ tends to zero if the damping factor is positive. \\
+To solve \ref{pl} analytically, since $m$, $\gamma$ and $k$ are constants. The \textbf{ansazt} associated to this equation is 
+\begin{align*}
+    z(t) = e^{rt},
+\end{align*}
+where $r$ is the auxiliary root.\\
+The auxiliary equation there for is
+\begin{align*}
+    mr^2 + \gamma r + k = 0 
+\end{align*}
+Solving this result simplifies for to;
+\begin{equation}
+    r = \frac{-\gamma \pm \sqrt{\gamm ^2 -4mk}}{2m}
+    \label{pm}
+\end{equation}
+The solution to \ref{pm} depends on the nature of the discriminant, $D$. The roots can be complex conjugates, real and distinct or repeated.\\
+\begin{itemize}
+    \item When $D=0$, (\ref{pm}) has repeated roots, 
+    \begin{equation*}
+        r = -\frac{\gamma}{2m}
+    \end{equation*}
+    and so the solution to the differential equation is 
+    \begin{align*}
+        z(t) = c_1 e ^{-\frac{\gamma}{2m}t} + c_2 t e^{-\frac{\gamma}{2m}t}
+    \end{align*}
+    It can be seen that as $t \to \infty$, $Z(t) \to 0$.
+\end{itemize}
+% I am going to join you later on ;) 
+. 
+\section{Numerical Approximation Methods (there trade-offs)}
+\subsection{Finite Difference Quotient}
+\subsection{Finite Difference schemes}
+\begin{figure}[H]
+    \includegraphics[width=0.45\textwidth]{src/index.png}
+     \includegraphics[width=0.45\textwidth]{src/index1.png}
+    \caption{index}
+    \label{fig:index}
+\end{figure}1
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{src/p1.png}
+     \includegraphics[width=0.45\textwidth]{src/p2.png}
+     \includegraphics[width=0.45\textwidth]{src/p3.png}
+    \caption{index}
+    \label{fig:ps}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{src/re.png}
+     \includegraphics[width=0.45\textwidth]{src/rea2.png}
+     \includegraphics[width=0.45\textwidth]{src/rea3.png}
+     \includegraphics[width=0.45\textwidth]{src/rea4.png}
+    \caption{real}
+    \label{fig:real}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{src/rea7.png}
+     \includegraphics[width=0.45\textwidth]{src/rea8.png}
+     \includegraphics[width=0.45\textwidth]{src/rea9.png}
+     \includegraphics[width=0.45\textwidth]{src/rea14.png}
+    \caption{real}
+    \label{fig:real1}
+\end{figure}
+
+% These 3 graphs below are the last three figures in the folder.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{src/x1.png}
+     \includegraphics[width=0.45\textwidth]{src/x2.png}
+     \includegraphics[width=0.45\textwidth]{src/x3.png}
+    \caption{x}
+    \label{fig:x}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{src/lorenz_system_2d.png}
+     \includegraphics[width=0.45\textwidth]{src/predetor_prey_model.png}
+    \caption{nonlinear}
+    \label{fig:nonlinear}
+\end{figure}
+
+\section{Conclusion}
+\begin{footnotesize}
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEfull,./references}
+\end{footnotesize}
+
+\end{document}
